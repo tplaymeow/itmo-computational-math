@@ -4,14 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "lab1",
+    name: "Solver",
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
     ],
     targets: [
-        .executableTarget(name: "lab1", dependencies: [
-            .product(name: "ArgumentParser", package: "swift-argument-parser"),
-        ]),
-        .testTarget(name: "lab1Tests", dependencies: ["lab1"]),
+        .executableTarget(
+            name: "Solver",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]),
+        .testTarget(
+            name: "SolverTests",
+            dependencies: ["Solver"]),
     ]
 )
