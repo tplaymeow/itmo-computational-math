@@ -24,6 +24,12 @@ struct SimpleIterationCommand: ParsableCommand {
     )
 
     func run() throws {
-        print("Hello World!!!")
+        var matrix: Matrix<Int> = try! .create(from: [
+            [ 1,  2,  3,  4, 0],
+            [ 5,  6,  7,  8, 0],
+            [ 9, 10, 11, 12, 0],
+            [13, 14, 15, 16, 0],
+        ]).get()
+        print(matrix as Any)
     }
 }
