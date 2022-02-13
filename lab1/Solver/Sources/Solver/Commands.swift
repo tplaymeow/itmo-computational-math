@@ -30,6 +30,6 @@ struct SimpleIterationCommand: ParsableCommand {
             [ 9, 10, 11, 12, 0],
             [13, 14, 15, 16, 0],
         ]).get()
-        print(matrix as Any)
+        print(matrix.submatrix(startRow: 1, startColumn: 1, endRow: 3, endColumn: 2))
     }
 }

@@ -54,12 +54,41 @@ extension Matrix {
 // MARK: - Submatrix
 
 extension Matrix {
+    enum SubmatrixError: Error {
+        case commonError
+    }
+
     func submatrix(
         startRow: Int,
         startColumn: Int,
         size: Size
-    ) -> Matrix<T> {
-        
+    ) -> Result<Matrix<T>, SubmatrixError> {
+        Matrix.create(
+            size: size,
+            elements: elements.dropFirst(startRow).prefix(size.rows)
+                .map { $0.dropFirst(startColumn).prefix(size.columns) }
+                .map(Array.init)
+        ).mapError(Self.transform)
+    }
+
+    func submatrix(
+        startRow: Int,
+        startColumn: Int,
+        endRow: Int,
+        endColumn: Int
+    ) -> Result<Matrix<T>, SubmatrixError> {
+        submatrix(
+            startRow: startRow,
+            startColumn: startColumn,
+            size: .init(
+                rows: endRow - startRow + 1,
+                columns: endColumn - startColumn + 1
+            )
+        )
+    }
+
+    private static func transform(_ error: CreationError) -> SubmatrixError {
+        return .commonError
     }
 }
 
