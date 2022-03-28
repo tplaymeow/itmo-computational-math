@@ -33,6 +33,7 @@ struct GaussSLAE: ParsableCommand {
         
         let determinant = slae.determinant
         print("Determinant: \(determinant)\n")
+        guard !determinant.isZero else { return }
         
         let triangalizedSLAE = slae.triangalized()
         print("Triangalized:\n\(triangalizedSLAE)\n")
