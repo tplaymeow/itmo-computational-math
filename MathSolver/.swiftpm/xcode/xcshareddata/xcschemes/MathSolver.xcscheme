@@ -80,6 +80,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "gauss"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "gauss -f /Users/t-guliamov/Desktop/&#x423;&#x447;&#x435;&#x431;&#x430;/itmo-computational-math/MathSolver/Sources/MathSolver/slae1.txt "
             isEnabled = "NO">
          </CommandLineArgument>

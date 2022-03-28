@@ -31,12 +31,15 @@ struct GaussSLAE: ParsableCommand {
         print("\n\n-- Solve --\n\n")
         print("Linear system:\n\(slae)\n")
         
-        let determinant = slae.determinant
+        let determinant = slae.determinant()
         print("Determinant: \(determinant)\n")
         guard !determinant.isZero else { return }
         
-        let triangalizedSLAE = slae.triangalized()
-        print("Triangalized:\n\(triangalizedSLAE)\n")
+        let (triangalizedSLAE, k) = slae.triangalized()
+        print("Triangalized (k = \(k)):\n\(triangalizedSLAE)\n")
+        
+        let triangalizedDeterminant = triangalizedSLAE.determinant(triangalized: true, k: k)
+        print("Triangalized determinant: \(triangalizedDeterminant), (\(abs(triangalizedDeterminant - determinant)))\n")
         
         let solution = triangalizedSLAE.calculate()
         print("Solution: \(solution)\n")

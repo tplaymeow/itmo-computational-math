@@ -12,14 +12,18 @@ struct LinearSystem {
     var size: Int { linearEquations.count }
     
     /// Определитель матрицы коефицентов `a`.
-    var determinant: Double {
-        Self.calculateDeterminant(matrix: matrix)
+    func determinant(triangalized: Bool = false, k: Int = 0) -> Double {
+        triangalized
+        ? (0..<size).map{ linearEquations[$0][$0] }.reduce(1, *) * (k.isMultiple(of: 2) ? 1 : -1)
+        : Self.calculateDeterminant(matrix: matrix)
     }
     
     /// Приведение к трекгольному преобладанию.
     /// Прямой ход
-    func triangalized() -> LinearSystem {
+    func triangalized() -> (LinearSystem, Int) {
         var transformedLinearEquations = linearEquations
+        /// Количество перестановок
+        var k = 0
         
         for currentRowIndex in transformedLinearEquations.indices {
             /// Перестановка (если требуется)
@@ -31,6 +35,7 @@ struct LinearSystem {
             let notZeroRowIndex = notZeroRowEnumerated?.offset ?? currentRowIndex
             let currentRow = notZeroRowEnumerated?.element ?? transformedLinearEquations[currentRowIndex]
             /// Меняем местами текущую строку и строку с ненулевым элементом.
+            if notZeroRowIndex != currentRowIndex { k += 1 }
             transformedLinearEquations.swapAt(notZeroRowIndex, currentRowIndex)
             
             guard !currentRow[currentRowIndex].isZero else { continue }
@@ -42,7 +47,7 @@ struct LinearSystem {
                 return  row + (multiplier * currentRow)
             }
         }
-        return LinearSystem(linearEquations: transformedLinearEquations)
+        return (LinearSystem(linearEquations: transformedLinearEquations), k)
     }
     
     /// Найти корни линейного уравнения.
@@ -50,7 +55,7 @@ struct LinearSystem {
     func calculate(triangalized: Bool = true) -> [Double] {
         var transformedLinearEquations = triangalized
             ? linearEquations
-            : self.triangalized().linearEquations
+            : self.triangalized().0.linearEquations
         
         for currentRowIndex in transformedLinearEquations.indices.reversed() {
             let currentRow = transformedLinearEquations[currentRowIndex]
